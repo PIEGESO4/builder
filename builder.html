@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resume Builder by Ambrose </title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #4f46e5;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .form-section, .preview-section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .form-section h2,
+    .preview-section h2 {
+      margin-top: 0;
+      color: #4f46e5;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.7rem;
+      margin: 0.5rem 0 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      background: #4f46e5;
+      color: white;
+      padding: 0.7rem 1.2rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      background: #f4f4f4;
+      padding: 1rem;
+      border-radius: 5px;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  Resume Builder
+</header>
+
+<div class="container">
+  <div class="form-section">
+    <h2>Enter Your Details</h2>
+    <input type="text" id="name" placeholder="Full Name" />
+    <input type="text" id="email" placeholder="Email" />
+    <input type="text" id="phone" placeholder="Phone Number" />
+    <textarea id="summary" placeholder="Professional Summary"></textarea>
+    <textarea id="skills" placeholder="Skills (comma separated)"></textarea>
+    <textarea id="experience" placeholder="Experience (one job per line)"></textarea>
+    <textarea id="education" placeholder="Education (one degree per line)"></textarea>
+    <button onclick="generateResume()">Generate Resume</button>
+    <button onclick="downloadResume()">Download</button>
+  </div>
+
+  <div class="preview-section">
+    <h2>Preview</h2>
+    <pre id="resume-output">Your resume will appear here...</pre>
+  </div>
+</div>
+
+<script>
+  function generateResume() {
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const summary = document.getElementById("summary").value.trim();
+    const skills = document.getElementById("skills").value.trim().split(",").map(s => `• ${s.trim()}`).join("\n");
+    const experience = document.getElementById("experience").value.trim().split("\n").map(e => `• ${e}`).join("\n");
+    const education = document.getElementById("education").value.trim().split("\n").map(ed => `• ${ed}`).join("\n");
+
+    const resume = `
+===========================
+${name}
+Email: ${email}
+Phone: ${phone}
+===========================
+
+Summary:
+${summary}
+
+Skills:
+${skills}
+
+Experience:
+${experience}
+
+Education:
+${education}
+`;
+
+    document.getElementById("resume-output").textContent = resume;
+  }
+
+  function downloadResume() {
+    const text = document.getElementById("resume-output").textContent;
+    const blob = new Blob([text], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "my_resume.txt";
+    a.click();
+  }
+</script>
+
+</body>
+</html>
